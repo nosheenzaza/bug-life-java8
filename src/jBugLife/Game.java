@@ -330,10 +330,9 @@ public class Game extends javafx.application.Application {
 	         * An infinite stream used to generate jump positions on demand. 
 	         */
 			jumpPosition = Stream
-					.iterate(
-							(double) JUMP_INIT_SPEED,
-							x -> (getTranslateY() == homeY) ? JUMP_INIT_SPEED
-									: x - GRAVITY).map(speed -> {
+					.iterate((double) JUMP_INIT_SPEED,
+							 x -> (getTranslateY() == homeY) ? JUMP_INIT_SPEED: x - GRAVITY)
+					.map(speed -> {
 						double dY = ((1.0 * speed));
 						if (getTranslateY() < homeY + dY)
 							return getTranslateY() - dY;
