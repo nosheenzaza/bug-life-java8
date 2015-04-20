@@ -339,10 +339,9 @@ public class Game extends javafx.application.Application {
 							return getTranslateY() - dY;
 						else
 							return homeY;
-					})
-					.iterator();
-	        
-	        root.getChildren().add(this);
+					}).iterator();
+
+			root.getChildren().add(this);
 		}
 		
 		public void jump() {
@@ -358,9 +357,9 @@ public class Game extends javafx.application.Application {
 					isJumping = false;	
 					collided = false;
 					/*
-					 * When the bug hits the ground again after a jump, we remove 
-					 * the bonus images from teh scene. We use filter method of 
-					 * streams to do so. 
+					 * When the bug hits the ground again after a jump, we
+					 * remove the bonus images from teh scene. We use filter
+					 * method of streams to do so.
 					 */
 					List<Node> remove = root.getChildren().stream()
 							.filter(x -> x instanceof Bonus.BImage)
