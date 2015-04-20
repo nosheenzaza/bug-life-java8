@@ -28,22 +28,24 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 
 /**
- * A very simple, self contained  game that demonstrates some Java 8 features, namely
- * lambdas and streams. 
+ * A very simple, self contained game that demonstrates some Java 8 features,
+ * namely lambdas and streams.
  * 
- * A bug is walking slowly and trying to catch stars. It jumps to collect them when
- * the player hits the space bar. For each non yellow star, it gets 5 points. For each
- * yellow star, a random number of multicolored stars is generated. For each yellow star,
- * the bug gets 10 points, for each other color, it gets 5 points. 
+ * A bug is walking slowly and trying to catch stars. It jumps to collect them
+ * when the player hits the space bar. For each non yellow star, it gets 5
+ * points. For each yellow star, a random number of multicolored stars is
+ * generated. For each yellow star, the bug gets 10 points, for each other
+ * color, it gets 5 points.
  * 
- * Note that if you want to write a serious game, it is not advisable to model 
- * it after this one. For instance, there a native way in JavaFX to animate,
- * and the timing mechanism used for this game is not precise and causes the 
+ * Note that if you want to write a serious game, it is not advisable to model
+ * it after this one. For instance, there a native way in JavaFX to animate, and
+ * the timing mechanism used for this game is not precise and causes the
  * animation to be choppy.
  * 
  * This game was originally written to demonstrate rxScala, a reactive streams
- * library. The original version is very interesting in its own right. You can 
- * check it out at https://github.com/Applied-Duality/RxGame/tree/master/src/aBugsLife
+ * library. The original version is very interesting in its own right. You can
+ * check it out at
+ * https://github.com/Applied-Duality/RxGame/tree/master/src/aBugsLife
  * 
  * @author Nosheen Zaza
  *
@@ -60,8 +62,8 @@ public class Game extends javafx.application.Application {
 	static final double GRAVITY = 0.4;
 	
 	/**
-	 * Accumulator for collected points. one of only 3  mutable (non final) variables 
-	 * declared in this game.
+	 * Accumulator for collected points. one of only 3 mutable (non final)
+	 * variables declared in this game.
 	 */
 	private int points = 0;
 	
@@ -165,8 +167,9 @@ public class Game extends javafx.application.Application {
 	}
 	
 	/**
-	 * Use of optional to indicate that this method either returns some color
-	 * or no color.
+	 * Use of optional to indicate that this method either returns some color or
+	 * no color.
+	 * 
 	 * @return
 	 */
 	private static Optional<Color> nextColor() {
@@ -192,19 +195,20 @@ public class Game extends javafx.application.Application {
 	    private final int nrTiles = (int)Math.ceil(SCREEN_WIDTH/tile.getWidth()) + 1;
 	    private final List<ImageView> tiles;   
 	    public Grass(final StackPane root) {
-	    	/*
-	    	 * We change the stream to a list so we can repeatedly operate on the tiles. 
-	    	 * Note that the tiles themselves are still mutable. 
-	    	 * 
-	    	 * The use of constructing tiles like this is that we can parallelize 
-	    	 * tile creation just by modifying to .range(0, nrTiles).parallel()
-	    	 * Note that, if we added each tile directly to root using 
-	    	 * root.getChildren().add(this) when we use parallel(), we get an exception, 
-	    	 * this is because  collection storing children in root is not thread-safe.
-	    	 * This is one example that shows why you need to be very careful when you mutate
-	    	 * variables outside the lambda expression, and why you should always strive to 
-	    	 * minimize mutability. 
-	    	 */
+			/*
+			 * We change the stream to a list so we can repeatedly operate on
+			 * the tiles. Note that the tiles themselves are still mutable.
+			 * 
+			 * The use of constructing tiles like this is that we can
+			 * parallelize tile creation just by modifying to .range(0,
+			 * nrTiles).parallel() Note that, if we added each tile directly to
+			 * root using root.getChildren().add(this) when we use parallel(),
+			 * we get an exception, this is because collection storing children
+			 * in root is not thread-safe. This is one example that shows why
+			 * you need to be very careful when you mutate variables outside the
+			 * lambda expression, and why you should always strive to minimize
+			 * mutability.
+			 */
 	    	tiles = IntStream
 	        		.range(0, nrTiles)
 	        		.mapToObj( i -> new ImageView(){ 
@@ -248,11 +252,13 @@ public class Game extends javafx.application.Application {
 							setFitWidth(image.getWidth() - 20);
 							setFitHeight(image.getHeight() - 40);
 							/*
-							 * Here you see how we operate on an optional type, to extract
-							 * a value. Note that since the absence of effect is expressed
-							 * by having a null effect, we are forced to assign a null eventually 
-							 * to ColorAdjust. The Java API still does not employ optional to 
-							 * indicate the absence of value, which is unfortunate. 
+							 * Here you see how we operate on an optional type,
+							 * to extract a value. Note that since the absence
+							 * of effect is expressed by having a null effect,
+							 * we are forced to assign a null eventually to
+							 * ColorAdjust. The Java API still does not employ
+							 * optional to indicate the absence of value, which
+							 * is unfortunate.
 							 */
 							ColorAdjust color = nextColor().map(
 									x -> new ColorAdjust(x.getHue() / 170, 0.3,
@@ -260,17 +266,17 @@ public class Game extends javafx.application.Application {
 							this.setEffect(color);
 						}
 					}).collect(Collectors.toList());
-			
+
 			Platform.runLater(() -> root.getChildren().addAll(bonus));
 			
 		}
 		
 		public int getBonusPoints() {
 			/*
-			 * Use of map and reduce to calculate the points collected. Note how 
-			 * by using reduce, we avoid the need of having an explicit variable in
-			 * our code to accumulate the points. Often times, using stream operations
-			 * helps to reduce mutability in code. 
+			 * Use of map and reduce to calculate the points collected. Note how
+			 * by using reduce, we avoid the need of having an explicit variable
+			 * in our code to accumulate the points. Often times, using stream
+			 * operations helps to reduce mutability in code.
 			 */
 			return bonus.stream()
 					.map(x -> x.getEffect() == null?5:10)
