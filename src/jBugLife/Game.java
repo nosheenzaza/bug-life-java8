@@ -78,13 +78,13 @@ public class Game extends javafx.application.Application {
 		root.setAlignment(Pos.BOTTOM_LEFT);
 		
 		/* Setup the sky */
-	    final Canvas sky = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
+		final Canvas sky = new Canvas(SCREEN_WIDTH, SCREEN_HEIGHT);
 		final GraphicsContext skyContext = sky.getGraphicsContext2D();
 		skyContext.setFill(Color.AZURE);
 		skyContext.fillRect(0, 0, SCREEN_WIDTH,SCREEN_HEIGHT);
-	    root.getChildren().add(sky);
+	    	root.getChildren().add(sky);
 	    
-	    /* Setup game entities entities */ 
+	    /* Setup game entities */ 
 	    final Collectible collectible = new Collectible(root);
 	    final Bug bug = new Bug(root);
 	    final Grass grass = new Grass(root);
